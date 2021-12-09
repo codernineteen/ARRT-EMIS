@@ -3,7 +3,7 @@ const { StatusCodes } = require('http-status-codes');
 
 class BadRequest extends CustomErrors{
     constructor(message) {
-        supser(message);
+        super(message);
         this.statusCode = StatusCodes.BAD_REQUEST;
     }
 }

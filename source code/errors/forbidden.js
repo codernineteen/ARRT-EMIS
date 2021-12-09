@@ -3,7 +3,7 @@ const { StatusCodes } = require('http-status-codes');
 
 class Forbidden extends CustomErrors{
     constructor(message) {
-        supser(message);
+        super(message);
         this.statusCode = StatusCodes.FORBIDDEN;
     }
 }

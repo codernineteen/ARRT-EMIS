@@ -1,28 +1,48 @@
 const User = require('../models/User');
 const {StatusCodes} = require('http-status-codes');
 const CustomError = require('../errors');
-const passport = require('passport');
+const {
+    createToken,
+    verifyToken,
+    attachCookiesToResponse
+} = require('../utils/jwt');
 
-const registerAdmin = async(req, res, next) => {
-    const {name, email, password, role} = req.body;
-    if(!name || !email || !password || !role) {
-        return res.status(StatusCodes.BAD_REQUEST).json({msg: "모든 정보를 입력해야하야합니다."})
+
+
+const registerAdmin = async(req, res) => {
+    const {name, email, password} = req.body;
+    const emailAlreadyExists = await User.findOne({email})
+    if (emailAlreadyExists) {
+        throw new CustomError.BadRequest("Email is already existed")
     }
-    const user = await User.create(req.body)
-    res.status(StatusCodes.CREATED).json({user})
-    next();
+    const user = await User.create({name, email, password});
+    const tokenPayload = {userId: user._id, name, role: user.role};
+    attachCookiesToResponse({res, payload: tokenPayload});
+    res.status(StatusCodes.CREATED).json({user: {tokenPayload}});
 }
 
-const login = (req, res) => {
-    const isLoginSuccess = passport.authenticate(
-        "local", 
-        { failureRedirect: "/login", successRedirect: "/" }
-    )
-    if(!isLoginSuccess) {
-        throw new CustomError.Unauthorized('이메일 혹은 비밀번호가 일치하지 않습니다.')
+const login = async (req, res) => {
+    const {email, password} = req.body;
+    if(!email || !password){
+        throw new CustomError.BadRequest('Please provide both email and password')
     }
-    res.status(StatusCodes.OK).json({msg: 'login success'})
+
+    const user = await User.findOne({email});
+    if(!user) {
+        throw new CustomError.Unauthorized(`No user with that email : ${email}`)
+    }
+    const isPasswordMatch = await user.comparePassword(password);
+    
+    if(!isPasswordMatch) {
+        throw new CustomError.Unauthorized('Either Password or Email is incorrect')
+    }
+
+    const tokenPayload = {userId: user._id, name, role: user.role};
+    attachCookiesToResponse({res, payload: tokenPayload});
+    res.status(StatusCodes.ACCEPTED).json({user: {tokenPayload}})
 }
+
+
 
 module.exports = {
     registerAdmin,

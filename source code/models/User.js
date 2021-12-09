@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const { default: isEmail } = require('validator/lib/isemail');
-const passportLocalMongoose = require('passport-local-mongoose');
 const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema({
@@ -37,16 +35,13 @@ const UserSchema = new mongoose.Schema({
     }
 })
 
-// UserSchema.pre('save', async function() {
-//     if(!this.isModified('password')) return;
-//     const salt = await bcrypt.genSalt(10);
-//     this.password = await bcrypt.hash(this.password, salt);
-// })
+UserSchema.pre('save', async function() {
+    if(!this.isModified('password')) return;
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt)
+});
 
-UserSchema.plugin(passportLocalMongoose, {usernameField: 'eamil'})
-
-//For login
-UserSchema.methods.comparePassword = async function(pwd) {
+UserSchema.methods.comparePassword = async function (pwd) {
     return await bcrypt.compare(pwd, this.password)
 }
 
