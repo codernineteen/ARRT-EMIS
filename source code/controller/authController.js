@@ -21,7 +21,7 @@ const registerAdmin = async(req, res) => {
     res.status(StatusCodes.CREATED).json({user: {tokenPayload}});
 }
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
     const {name, email, password} = req.body;
     if(!email || !password){
         throw new CustomError.BadRequest('Please provide both email and password')
@@ -39,7 +39,7 @@ const login = async (req, res) => {
 
     const tokenPayload = {userId: user._id, name: user.name, role: user.role};
     attachCookiesToResponse({res, eachPayload: tokenPayload});
-    res.status(StatusCodes.ACCEPTED).json({user: {tokenPayload}})
+    res.status(StatusCodes.ACCEPTED).redirect('/')
 }
 
 const logout = async (req, res) => {

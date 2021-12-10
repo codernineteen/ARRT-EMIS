@@ -20,12 +20,19 @@ const archiveRouter = require('./routes/archiveRoutes');
 const cookieParser = require('cookie-parser');
 //image uploader
 const fileUploader = require('express-fileupload');
+//path
+const path = require('path');
+const { appendFile } = require('fs');
+
+//template engine
+app.set('view engine', 'ejs')
 
 //middlewares
 //log
 app.use(morgan('dev'));
-//data format
+//data format, static assets
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 //passport and session
 app.use(cookieParser(process.env.JWT_SECRET));
 //image upload
@@ -35,6 +42,10 @@ app.use(fileUploader());
 app.get('/', (req, res) => {
     res.send('home')
 })
+
+app.get('/auth/login', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/login.html'));
+});
 
 app.use('/user', userRouter)
 app.use('/auth', authRouter)
