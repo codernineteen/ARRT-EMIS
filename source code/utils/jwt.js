@@ -10,11 +10,11 @@ const createToken = ({payload}) => {
 
 const verifyToken = ({token}) => jwt.verify(token, process.env.JWT_SECRET)
 
-const attachCookiesToResponse = ({res, payload}) => {
-    const token = createToken({payload})
-    console.log(token)
+const attachCookiesToResponse = ({res, eachPayload}) => {
+    const token = createToken({payload: eachPayload})
+    
     return res.cookie(
-        'access_token',
+        'token',
         token,
         {
             httpOnly: true,
