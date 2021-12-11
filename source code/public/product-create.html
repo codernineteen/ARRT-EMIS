@@ -11,7 +11,11 @@
 </head>
 
 <body>
-    <form class="product-form" method="post">
+    <form 
+        class="product_form" 
+        method="post" 
+        enctype="multipart/form-data"
+    >
         <h1>New Product</h1>
         <div class="form-control">
 
@@ -54,10 +58,15 @@
                     <option value="others">others</option>
                 </select>
             </div>
+
+            <div class="imageWrapper">
+                <label for="product_images">이미지들</label>
+                <input type="file" name="product_images" class="product_images" multiple/>
+            </div>
             
         </div>
+        <button class="product_submit_btn">submit</button>
     </form>
-    <div class="fail-message"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

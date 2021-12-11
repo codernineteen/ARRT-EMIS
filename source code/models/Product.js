@@ -3,33 +3,30 @@ const mongoose = require('mongoose');
 const ProductSchema = new mongoose.Schema({
     name : {
         type: String,
-        required: [true, 'name needed'],
+        // required: [true, 'name needed'],
         maxlength: 20 
     },
     color : {
         type: [String],
-        required: [true, 'color needed'], 
+        // required: [true, 'color needed'], 
     },
     design : {
         type: [String],
-        required: [true, 'design needed'],
+        // required: [true, 'design needed'],
     },
     material : {
         type: [String],
-        required: [true, 'material needed'],
+        // required: [true, 'material needed'],
     },
     origin : {
         type: String,
         default: "KOREA"
     },
     price : {
-        type: Number,
-        required: [true, "price needed"]
+        type: Number
+        // required: [true, "price needed"]
     },
-    partImage : {
-        type: [String]
-    },
-    totalImage : {
+    images : {
         type: [String]
     },
     category: {

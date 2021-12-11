@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const {authentication, authorizePermission} = require('../middleware/authenticate')
+//multer - multiple file uploader
+const upload = require('../middleware/multer');
 
 const {
     getAllProduct,
@@ -14,10 +16,16 @@ const {
 
 router.route('/')
     .get(getAllProduct)
-    .post(authentication, authorizePermission('devADMIN'), createProduct)
 
-router.route('/uploads')
-    .post(authentication, authorizePermission('devADMIN'), imageUpload)
+router.route('/create')
+    .post(authentication, authorizePermission('devADMIN'), upload.array('images'), createProduct)
+
+// router.route('/uploads')
+//     .post(
+//         authentication, 
+//         authorizePermission('devADMIN'),  
+//         imageUpload
+//     )
 
 router.route('/:id')
     .get(getSingleProduct)

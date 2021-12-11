@@ -25,11 +25,16 @@ const path = require('path');
 const { appendFile } = require('fs');
 //authMiddleware
 const {authentication, authorizePermission} = require('./middleware/authenticate')
+//bodyparser
+const bodyParser = require('body-parser')
 
 //template engine
 app.set('view engine', 'ejs')
 
 //middlewares
+//body parser
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 //log
 app.use(morgan('dev'));
 //data format, static assets
@@ -52,9 +57,9 @@ app.get('/auth/login', (req, res) => {
 });
 app.use('/user', userRouter)
 //product
-app.get('/products' , (req, res) => {
-    res.render('products')
-})
+// app.get('/products' , (req, res) => {
+//     res.render('products');
+// })
 app.get('/products/create', 
     authentication, 
     authorizePermission('devADMIN'),

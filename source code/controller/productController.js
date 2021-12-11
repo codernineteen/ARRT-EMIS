@@ -1,10 +1,11 @@
 const Product = require('../models/Product');
 const {StatusCodes} = require('http-status-codes');
 const CustomError = require('../errors');
-const path = require('path');
+
 
 const createProduct = async (req, res) => {
     const product = await Product.create(req.body)
+    console.log(req.files);
     res.status(StatusCodes.CREATED).json({product})
 }
 
@@ -38,29 +39,10 @@ const deleteProduct = async (req, res) => {
     res.status(StatusCodes.OK).json({product});
 }
 
-const imageUpload = async (req, res) => {
-    if(!req.files || Object.keys(req.files).length === 0) {
-        throw new CustomError.BadRequest('No files were uploaded');
-    }
-
-    const images = req.files.image
-    if(!images.mimetype.startsWith('image')) {
-        throw new CustomError.BadRequest('Please upload Image')
-    }
-    const uploadPath = path.join(__dirname,`../public/images/${images.name}`)
-    await images.mv(uploadPath, (err)=> {
-        if (err) {
-            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(err)
-        }
-        res.status(StatusCodes.OK).json({image: `/uploads/${images.name}`});
-    })
-}
-
 module.exports = {
     getAllProduct,
     getSingleProduct,
     createProduct,
     updateProduct,
-    deleteProduct,
-    imageUpload
+    deleteProduct
 }
