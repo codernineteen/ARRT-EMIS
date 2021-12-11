@@ -23,6 +23,8 @@ const fileUploader = require('express-fileupload');
 //path
 const path = require('path');
 const { appendFile } = require('fs');
+//authMiddleware
+const {authentication, authorizePermission} = require('./middleware/authenticate')
 
 //template engine
 app.set('view engine', 'ejs')
@@ -38,18 +40,31 @@ app.use(cookieParser(process.env.JWT_SECRET));
 //image upload
 app.use(fileUploader());
 
-//routes
+//--routes
+//home
 app.get('/', (req, res) => {
     res.send('home')
 })
-
+//login
+app.use('/auth', authRouter)
 app.get('/auth/login', (req, res) => {
     res.sendFile(path.join(__dirname, './public/login.html'));
 });
-
 app.use('/user', userRouter)
-app.use('/auth', authRouter)
+//product
+app.get('/products' , (req, res) => {
+    res.render('products')
+})
+app.get('/products/create', 
+    authentication, 
+    authorizePermission('devADMIN'),
+    (req, res) => {
+        res.sendFile(path.join(__dirname, './public/product-create.html'))
+    }
+)
 app.use('/products', productRouter)
+
+
 app.use('/notice', noticeRouter)
 app.use('/archives', archiveRouter)
 

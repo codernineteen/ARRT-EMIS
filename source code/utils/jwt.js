@@ -18,7 +18,7 @@ const attachCookiesToResponse = ({res, eachPayload}) => {
         token,
         {
             httpOnly: true,
-            expires: new Date(Date.now() + 900000),
+            expires: new Date(Date.now() + 9000000),
             secure: process.env.NODE_ENV === 'production',
             signed: true,
         }
