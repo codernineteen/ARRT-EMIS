@@ -11,17 +11,17 @@
 </head>
 
 <body>
-    <form class="login-form">
+    <form class="login-form" method="post">
         <h1>Login</h1>
         <div class="form-control">
-            <h3>Email</h3>
+            <label for="email">Email</label>
             <input type="text" name="email" class="email-input"/>
-            <h3>password</h3>
+            <label for="password">Password</label>
             <input type="text" name="password" class="password-input"/>
-            <input class="login-btn" type="button" value="로그인">
+            <button>Login</button>
         </div>
     </form>
-
+    <div class="fail-message"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

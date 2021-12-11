@@ -1,24 +1,31 @@
 const emailInput = document.querySelector('.email-input');
 const passwordInput = document.querySelector('.password-input');
 const loginForm = document.querySelector('.login-form');
-const loginBtn = document.querySelector('.login-btn');
+const failMessage = document.querySelector('.fail-message')
 
 
-loginBtn.addEventListener('submit', async (e) => {
+loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    const user = {email, password}
     try {
-        const res = await axios({
-            method: 'post',
-            url: '/auth/login',
-            baseURL: 'http://localhost:3000',
-            data: {
-              email: emailInput.value,
-              password: passwordInput.value
-            }
+        const response = await fetch('/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(user),
         });
-        console.log(res)
-    } catch (error) {
-        console.log(error)
-        throw new Error
+        let json = await response.json();
+        if(json.user.name === 'junghoon') {
+            window.location.href = "http://localhost:3000"
+        }
+        else {
+            failMessage.innerHTML = '<div class="fail-message">Authentication failed</div>'
+        }
+    }
+    catch (error) {
+        console.log(error);
     }
 })

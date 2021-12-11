@@ -22,7 +22,7 @@ const registerAdmin = async(req, res) => {
 }
 
 const login = async (req, res, next) => {
-    const {name, email, password} = req.body;
+    const {email, password} = req.body;
     if(!email || !password){
         throw new CustomError.BadRequest('Please provide both email and password')
     }
@@ -39,7 +39,7 @@ const login = async (req, res, next) => {
 
     const tokenPayload = {userId: user._id, name: user.name, role: user.role};
     attachCookiesToResponse({res, eachPayload: tokenPayload});
-    res.status(StatusCodes.ACCEPTED).redirect('/')
+    res.status(StatusCodes.ACCEPTED).json({user})
 }
 
 const logout = async (req, res) => {
