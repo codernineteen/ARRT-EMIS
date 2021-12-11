@@ -18,12 +18,14 @@ loginForm.addEventListener('submit', async (e) => {
             body: JSON.stringify(user),
         });
         let json = await response.json();
+        let statusCodes = response.status;
+        if(statusCodes == 401) {
+            return failMessage.innerHTML = '<div class="fail-message">Authentication failed</div>'
+        }
         if(json.user.name === 'junghoon') {
             window.location.href = "http://localhost:3000"
         }
-        else {
-            failMessage.innerHTML = '<div class="fail-message">Authentication failed</div>'
-        }
+
     }
     catch (error) {
         console.log(error);
