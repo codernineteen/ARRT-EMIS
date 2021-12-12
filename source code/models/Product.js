@@ -26,7 +26,10 @@ const ProductSchema = new mongoose.Schema({
         type: Number
         // required: [true, "price needed"]
     },
-    images : {
+    partImages : {
+        type: [String]
+    },
+    totalImages : {
         type: [String]
     },
     category: {

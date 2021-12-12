@@ -35,8 +35,7 @@ materialAddBtn.addEventListener('click', () => {
 
 
 productForm.addEventListener('submit', async(e) => {
-    e.preventDefault();
-    
+
     let colorArr = [];
     let designArr = [];
     let materialArr = [];
@@ -50,27 +49,68 @@ productForm.addEventListener('submit', async(e) => {
     const design = designArr;
     const material = materialArr;
     const category = document.querySelector('#product_category').value;
-    const images = document.querySelector('.product_images').files;
-
-    const formData = new FormData();
-    formData.append('name', name)
-    formData.append('price', price)
-    formData.append('color', color)
-    formData.append('design', design)
-    formData.append('material', material)
-    formData.append('category', category)
-    for (let image of images) {
-        formData.append('images', image)
-    }
-
+    const partImages = document.querySelector('.partImages').files;
+    const totalImages = document.querySelector('.totalImages').files;
+    
     try {
+        const formData = new FormData();
+        formData.append('name', name)
+        formData.append('price', price)
+        formData.append('color', color)
+        formData.append('design', design)
+        formData.append('material', material)
+        formData.append('category', category)
+        for (let image of partImages) {
+            formData.append('partImages', image)
+        }
+        for (let image of totalImages) {
+            formData.append('totalImages', image)
+        }
         const response = await fetch('/products/create' , {
             method: 'POST',
             body: formData
         })
         const json = await response.json()
+        console.log(json)
     } catch (error) {
         console.log(error)
     }
 
 })
+//req.files
+// [Object: null prototype] {
+//     partImages: [
+//         {
+//           fieldname: 'partImages',
+//           originalname: '20181223_200223.jpg',
+//           encoding: '7bit',
+//           mimetype: 'image/jpeg',
+//           destination: 'C:\\Users\\junsb\\OneDrive\\바탕 화면\\Arrt`emis web Project\\source code\\public\\images\\productImage',
+//           filename: '20181223_200223.jpg',
+//           path: 'C:\\Users\\junsb\\OneDrive\\바탕 화면\\Arrt`emis web Project\\source code\\public\\images\\productImage\\20181223_200223.jpg',
+//           size: 671039
+//         }
+//       ],
+//       totalImages: [
+//         {
+//           fieldname: 'totalImages',
+//           originalname: '20181223_200223.jpg',
+//           encoding: '7bit',
+//           mimetype: 'image/jpeg',
+//           destination: 'C:\\Users\\junsb\\OneDrive\\바탕 화면\\Arrt`emis web Project\\source code\\public\\images\\productImage',
+//           filename: '20181223_200223.jpg',
+//           path: 'C:\\Users\\junsb\\OneDrive\\바탕 화면\\Arrt`emis web Project\\source code\\public\\images\\productImage\\20181223_200223.jpg',
+//           size: 671039
+//         }
+//       ]
+//     }
+
+//req.body
+//     [Object: null prototype] {
+//       product_name: 'landing hoodie',
+//       product_color: 'rust black',
+//       product_design: 'front logo',
+//       product_material: 'cotton 100%',
+//       product_price: '500',
+//       product_category: 'top'
+//     }

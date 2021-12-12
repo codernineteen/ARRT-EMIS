@@ -11,7 +11,9 @@
 </head>
 
 <body>
-    <form 
+    <form
+        accept="image/x-png,image/gif,image/jpeg" 
+        action="/products/create"
         class="product_form" 
         method="post" 
         enctype="multipart/form-data"
@@ -59,9 +61,13 @@
                 </select>
             </div>
 
-            <div class="imageWrapper">
-                <label for="product_images">이미지들</label>
-                <input type="file" name="product_images" class="product_images" multiple/>
+            <div class="imageWrapper1">
+                <label for="partImages">이미지들</label>
+                <input type="file" name="partImages" class="partImages" multiple/>
+            </div>
+            <div class="imageWrapper1">
+                <label for="totalImages">이미지들</label>
+                <input type="file" name="totalImages" class="totalImages" multiple/>
             </div>
             
         </div>

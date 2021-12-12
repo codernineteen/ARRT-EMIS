@@ -1,7 +1,12 @@
+//---------------------------------------------------------------------
+//basic setting
+
 require('dotenv').config()
 require('express-async-errors');
 const express = require('express');
 const app = express();
+
+//---------------------------------------------------------------------
 
 //databse
 const connectDB = require('./db/connectDB');
@@ -19,7 +24,6 @@ const archiveRouter = require('./routes/archiveRoutes');
 //security;
 const cookieParser = require('cookie-parser');
 //image uploader
-const fileUploader = require('express-fileupload');
 //path
 const path = require('path');
 const { appendFile } = require('fs');
@@ -28,10 +32,14 @@ const {authentication, authorizePermission} = require('./middleware/authenticate
 //bodyparser
 const bodyParser = require('body-parser')
 
+//---------------------------------------------------------------------
+
 //template engine
 app.set('view engine', 'ejs')
 
-//middlewares
+//---------------------------------------------------------------------
+//total middlewares
+
 //body parser
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -42,8 +50,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 //passport and session
 app.use(cookieParser(process.env.JWT_SECRET));
-//image upload
-app.use(fileUploader());
+
+//---------------------------------------------------------------------
 
 //--routes
 //home
@@ -79,7 +87,7 @@ app.use(errorHandlerMiddleware);
 
 
 
-
+//---------------------------------------------------------------------
 
 const port = process.env.PORT || 3000
 
